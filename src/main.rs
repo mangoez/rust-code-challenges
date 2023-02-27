@@ -3,6 +3,14 @@ enum Pulse {
     Short,
     Long,
 }
+impl std::fmt::Display for Pulse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Pulse::Short => write!(f, "."),
+            Pulse::Long => write!(f, "_"),
+        }
+    }
+}
 
 /// Represents a single character
 type Letter = Vec<Pulse>;
@@ -14,12 +22,26 @@ trait MorseCode {
     fn to_morse_code(&self) -> Message;
 }
 
-impl std::fmt::Display for Pulse {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Pulse::Short => write!(f, "."),
-            Pulse::Long => write!(f, "_"),
+impl MorseCode for String {
+    fn to_morse_code(&self) -> Message {
+        use Pulse::*;
+        let mut msg = Vec::with_capacity(self.len());
+
+        for c in self.chars() {
+            let pulses = match c {
+                'H' | 'h' => vec![Short, Short, Short, Short],
+                'E' | 'e' => vec![Short],
+                'L' | 'l' => vec![Short, Long, Short, Short],
+                'O' | 'o' => vec![Long, Long, Long],
+                'W' | 'w' => vec![Short, Long, Long],
+                'R' | 'r' => vec![Short, Long, Short],
+                'D' | 'd' => vec![Long, Short, Short],
+                _ => continue,
+            };
+            msg.push(pulses);
         }
+
+        msg
     }
 }
 
@@ -27,9 +49,9 @@ fn print_morse_code(code: &Message) {
     for letter in code.iter() {
         for pulse in letter.iter() {
             print!("{}", pulse);
-        };
+        }
         print!(" ");
-    };
+    }
     println!();
 }
 
@@ -41,15 +63,6 @@ fn main() {
     print_morse_code(&greeting);
 }
 
-
-impl std::fmt::Display for Pulse {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Short => write!(f, "."), 
-            Self::Long => write!(f, "_"),
-        }
-    }
-}
 
 #[test]
 fn hello_world() {
