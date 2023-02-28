@@ -31,7 +31,29 @@ impl Hand {
 
     fn value(&self) -> usize {
         // TODO: implement this method
-        0 
+        let mut out_sum = 0;
+
+        for hand_card in &self.cards {
+            match hand_card {
+                Card:: Two => out_sum += 2,
+                Card:: Three => out_sum += 3,
+                Card:: Four => out_sum += 4,
+                Card:: Five => out_sum += 5,
+                Card:: Six => out_sum += 6,
+                Card:: Seven => out_sum += 7,
+                Card:: Eight => out_sum += 8,
+                Card:: Nine => out_sum += 9,
+                Card:: Jack | Card::Queen | Card::King => out_sum += 10,
+                Card:: Ace => {
+                    if out_sum + 10 >= 21 {
+                        out_sum += 1;
+                    } else {
+                        out_sum += 11;
+                    }
+                }
+            }
+        } 
+        out_sum
     }
 
     fn is_loosing_hand(&self) -> bool {
