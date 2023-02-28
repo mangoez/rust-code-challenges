@@ -31,19 +31,20 @@ impl Hand {
 
     fn value(&self) -> usize {
         // TODO: implement this method
+        
         let mut out_sum = 0;
 
         for hand_card in &self.cards {
-            out_sum += match hand_card {
-                Card:: Two => 2,
-                Card:: Three => 3,
-                Card:: Four => 4,
-                Card:: Five => 5,
-                Card:: Six => 6,
-                Card:: Seven => 7,
-                Card:: Eight => 8,
-                Card:: Nine => 9,
-                Card:: Jack | Card::Queen | Card::King => 10,
+            match hand_card {
+                Card:: Two => out_sum += 2,
+                Card:: Three => out_sum += 3,
+                Card:: Four => out_sum += 4,
+                Card:: Five => out_sum += 5,
+                Card:: Six => out_sum += 6,
+                Card:: Seven => out_sum += 7,
+                Card:: Eight => out_sum += 8,
+                Card:: Nine => out_sum += 9,
+                Card:: Jack | Card::Queen | Card::King => out_sum += 10,
                 Card:: Ace => {
                     if out_sum + 10 >= 21 {
                         out_sum += 1;
